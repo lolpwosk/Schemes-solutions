@@ -1,0 +1,42 @@
+Этап 1: Фазз каталогов
+common.txt
+DirBuster-2007_directory-list-2.3-medium.txt
+raft-medium-directories.txt
+raft-medium-words.txt
+
+ffuf -u http://TARGET/FUZZ -w slovar.txt
+-ac -fc ненужные коды -fs размер (обычно 1532)
+
+
+Этап 2: рекурсия
+feroxbuster -u http://TARGET -w slovar.txt --depth 2-3 --filter-status 404 --filter-size 1532
+
+Этап 3: фаззинг с расширениями:
+Чекаешь .bak,.old,.orig,.backup,.zip,.tar,.tar.gz,.7z,.gz.txt,.log,.sql,.conf,.ini,.yml,.yaml,.json,.swp,~,.save
+
+словари с расширениями: 
+web-extensions.txt
+raft-medium-extensions.txt
+
+ffuf -u http://TARGET/FUZZ -w SLOVAR -e $(cat SLOVAR | tr '\n' ',') -ac -fc искл -fs 1532
+пример:
+ffuf -u http://gavel.htb/FUZZ \
+> -w common.txt \
+> -e $(cat web-extensions.txt | tr '\n' ',') \
+> -fc 403 -fs 274
+
+Как выявить размер мусора: 
+ffuf -u http://target/FUZZ -w common.txt
+и смотрим размер size, которые отдают 200 OK или 302, видим какой там размер повторяется и его ставим в -fs
+
+Этап 4, если нашел интересную страницу, по типу
+/backup
+/config
+/admin
+/uploads
+
+Далее начинаю фаззить подключая словари:
+Common-DB-Backups.txt
+LinuxFileList.txt
+versioning_metafiles.txt
+
