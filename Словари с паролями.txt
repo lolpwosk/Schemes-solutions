@@ -1,0 +1,42 @@
+CTF PASSWORD WORDLIST PATHS (SecLists)
+
+
+ 1) FIRST
+/usr/share/seclists/Passwords/Common-Credentials/probable-v2_top-207.txt
+/usr/share/seclists/Passwords/Common-Credentials/probable-v2_top-1575.txt
+/usr/share/seclists/Passwords/Common-Credentials/probable-v2_top-12000.txt
+
+2)
+/usr/share/seclists/Passwords/Common-Credentials/xato-net-10-million-passwords.txt
+/usr/share/seclists/Passwords/Common-Credentials/Pwdb_top-100000.txt
+/usr/share/seclists/Passwords/Common-Credentials/Pwdb_top-1000000.txt
+
+# 3) для web/auth)
+/usr/share/seclists/Passwords/Leaked-Databases/phpbb.txt
+/usr/share/seclists/Passwords/Leaked-Databases/myspace.txt
+/usr/share/seclists/Passwords/Leaked-Databases/honeynet.txt
+/usr/share/seclists/Passwords/Leaked-Databases/000webhost.txt
+/usr/share/seclists/Passwords/Leaked-Databases/Ashley-Madison.txt
+/usr/share/seclists/Passwords/Leaked-Databases/hak5.txt
+
+4) KEYBOARD
+/usr/share/seclists/Passwords/Keyboard-Walks/walk-the-line.txt
+/usr/share/seclists/Passwords/Keyboard-Walks/Keyboard-Combinations.txt
+
+5) (SSH/RDP/admin panels/services)
+/usr/share/seclists/Passwords/corporate_passwords.txt
+/usr/share/seclists/Passwords/Default-Credentials/ssh-betterdefaultpasslist.txt
+/usr/share/seclists/Passwords/Default-Credentials/windows-betterdefaultpasslist.txt
+/usr/share/seclists/Passwords/Default-Credentials/tomcat-betterdefaultpasslist.txt
+/usr/share/seclists/Passwords/Default-Credentials/vnc-betterdefaultpasslist.txt
+/usr/share/seclists/Passwords/Default-Credentials/telnet-betterdefaultpasslist.txt
+
+7) WIFI
+/usr/share/seclists/Passwords/WiFi-WPA/probable-v2-wpa-top62.txt
+/usr/share/seclists/Passwords/WiFi-WPA/probable-v2-wpa-top447.txt
+/usr/share/seclists/Passwords/WiFi-WPA/probable-v2-wpa-top4800.txt
+/usr/share/seclists/Passwords/Malware/mirai-botnet.txt
+/usr/share/seclists/Passwords/Malware/conficker.txt
+
+
+
