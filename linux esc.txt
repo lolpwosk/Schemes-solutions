@@ -3,7 +3,9 @@ groups
 ls
 sudo -l
 ps auxf
-netstat 127.0.0.1 
+
+netstat -tulnp
+ss -tulnp
 
 find / -writable -type d 2>/dev/null | head #первые 10 совпадений
 grep -R "password" /etc 2>/dev/null | head 
@@ -30,3 +32,4 @@ sudo -V
 
 Если мы видим, какую то cron задачу, где выполняется скрипт. То можем посмотреть, не предается ли пароль в аргументах команды.
 Для этого смотрим тот же ps aux или history
+
