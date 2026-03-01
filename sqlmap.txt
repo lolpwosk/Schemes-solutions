@@ -1,4 +1,4 @@
-Копирую в файл нужный запрос из Burp.
+Копируем в файл нужный запрос из Burp.
 
 sqlmap -r req.txt -p id --batch --level=1 --risk=1
 
