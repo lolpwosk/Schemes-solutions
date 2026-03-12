@@ -1,0 +1,40 @@
+Известные категории скриптов nmap:
+auth - скрипты, связанные с аутентификацией
+discovery - скрипты для обнаружения хостов и сервисов
+vuln - поиск CVE
+exploit - попытка эксплуатации CVE
+safe - безопасные скрипты
+intrusive - агрессивные скрипты
+brute - брутфорс
+
+Директория со скриптами:
+ls /usr/share/nmap/scripts/
+
+
+Запуск конкретного скрипта:
+nmap --script http-title -p 80 target
+
+Помощь по конкретному скрипту:
+nmap --script-help smb-enum-shares 
+
+Помощь по всем скриптам категории:
+nmap --script-help vuln
+
+
+Атаки:
+Запуск всех скриптов категории
+nmap --script vuln target
+nmap --script auth target
+
+запуск всех скриптов для протокола
+nmap --script smb-* -p445 target
+
+
+Поиск:
+ls /usr/share/nmap/scripts/ | grep протокол
+
+
+Посмотреть аргументы для определенного скрипта:
+
+cd /usr/share/nmap/scripts
+cat ssh-brute | grep args
