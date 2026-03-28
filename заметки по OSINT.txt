@@ -1,0 +1,68 @@
+Полезные сайты:
+dehashed - слитые пароли, нужна регистрация
+emailrep - репутация email нужна регистрация
+haveibeenpwned ищет инфу об утечек почт
+sha1encoder - быстро захэшировать пароль.
+crackstation net - проверка, есть ли такой хэш в базе
+_IntelligenceX - сливы почт с паролями, логин + подписка
+
+guerillamail.com + lampyre.io поиск утечек email/телефон
+
+SmartSearchBot - телеграмм бот, поиск по email
+
+dnsenum:
+Базовый скан — dnsenum example.com. 
+Выявит важную DNS-информацию, в том числе адреса хостов, именные серверы, почтовые серверы.
+Полное перечисление, включая перебор поддоменов — 
+dnsenum --enum -f wordlist.txt example.com.
+Брут-форс с большим количеством потоков и пользовательским тайм-аутом — 
+dnsenum -f subdomains.txt -p 10 -t 4 example.com.
+Отключить обратные запросы и цветной вывод — 
+dnsenum --noreverse --nocolor example.com.
+Сохранить результаты в файл — dnsenum -o results.txt  
+
+
+базовое сканирование сабдоменов:
+fierce
+
+
+Поиск опечаток для домена:
+./urlcrazy
+
+
+
+Преобразовать long url в мини url:
+Tinyurl
+Преобразовать mini url в long url:
+URL expander
+
+Поиск инфы о доменном имени:
+TheHarvester
+
+
+операторы google:
+site: — ограничивает поиск результатами только с определённого сайта или домена.
+Пример: site:example.com — найдёт только страницы с домена example.com.
+inurl: — ищет указанный текст в URL страницы.
+Пример: inurl:admin — найдёт страницы, в адресе которых есть слово "admin".
+intitle: — ищет указанный текст в заголовке HTML-страницы (теге <title>).
+Пример: intitle:"login page" — найдёт страницы, заголовки которых содержат "login page".
+intext: — ищет указанный текст в теле страницы, то есть в основном контенте.
+Пример: intext:"username=admin" — найдёт страницы, где в тексте встречается "username=admin".
+filetype: — ищет документы определённого формата.
+Пример: filetype:pdf budget — найдёт PDF-файлы, содержащие слово "budget".
+
+Все эти операторы можно комбинировать
+
+
+web.archive.org поиск снапшотов сайтов
+
+snoop - поиск по нику
+
+
+Абсолютно всё по осинту:
+https://osintframework.com/
+https://hacker-basement.com/osint-list
+
+
+
