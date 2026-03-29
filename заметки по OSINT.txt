@@ -65,4 +65,10 @@ https://osintframework.com/
 https://hacker-basement.com/osint-list
 
 
+Декодировать/раскодировать из разных кодировок: https://involta.ru/tools/decoder/?ysclid=mn7ddvm74a17933962
+Ресурс по аналогичной теме: https://2cyr.com/decode/?lang=ru
+
+Поиск адреса по картинке: yandex images
+
+
 
