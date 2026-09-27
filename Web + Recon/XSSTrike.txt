@@ -1,0 +1,34 @@
+GET req:
+python3 xsstrike.py -u "http://example.com/search.php?q=query"
+
+POST req:
+python3 xsstrike.py -u "http://example.com/search.php" --data "q=query"
+
+Полезная нагрузка в URL путь:
+python3 xsstrike.py -u "http://example.com/search/form/query" --path
+
+POST как json:
+python3 xsstrike.py -u "http://example.com/search.php" --data '{"q":"query"}' --json
+
+Тестирование определенной страницы:
+python3 xsstrike.py -u "http://example.com/page.php" --crawl
+-l <глубина сканирования>, по умолчанию 2
+
+
+Тестирование URL из файла:
+python xsstrike.py --seeds urls.txt 
+
+Пейлоады из файла:
+
+python3 xsstrike.py -u "http://example.com/page.php?q=query" -f /path/to/file.txt
+
+поточность:
+python xsstrike.py -u "http://example.com" -t 10 --crawl -l 3
+
+Использование прокси:
+python3 xsstrike.py -u "http://example.com/search.php?q=query" --proxy
+
+
+
+Мануал:
+https://github.com/s0md3v/XSStrike/wiki/Usage

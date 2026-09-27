@@ -1,0 +1,12 @@
+wpscan - сканер уязвимостей WordPress
+wpscan --update - обновить базы. Порой лучше использовать с опцией --proxy http://URL, чтобы не зависало.
+Базовый скан:
+wpscan --url http://target.com/ -e <команда> - опции для перечисления.
+vp - уязвимые плагины
+ap - все плагины
+u1-5 - перечисление пользователей с id 1-5
+
+--plugins-detection <MODE> - выбрать мод для детекта плагинов (mixed,passive,aggressive)
+
+Примеры использования:
+wpscan --url http://target/webservices/wp -e ap --plugins-detection aggressive - перебор плагинов, по плагинам можно будет искать CVE

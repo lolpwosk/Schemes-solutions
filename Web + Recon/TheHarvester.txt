@@ -1,0 +1,17 @@
+есть конфиг файл c API: /etc/theHarvester:
+
+
+Использование (базовая схема)
+theHarvester -d <целевой_домен> -b <источник_данных> -l <лимит_результатов>
+
+theHarvester -d company.com -b all -l 500 -f full_report (экспорт в XML и JSON)
+
+
+
+
+Отчетность:
+HTML-отчет: theHarvester -d site.com -b google -f report.html
+
+JSON для автоматизации: theHarvester -d site.com -b google -f report.json
+
+XML: theHarvester -d site.com -b google -f report.xml

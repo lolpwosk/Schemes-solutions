@@ -1,0 +1,20 @@
+amass <команда> опции
+команды:
+enum, intel
+Пассивная разведка:
+amass enum -passive -d <домен> -o subdomains.txt
+
+
+
+
+Активная разведка:
+amass enum -active -brute -d <домен>
+
+-min-for-recursive <число> - рекурсия для найденных сабдоменов
+
+-o <файл> - экспорт в txt
+-oA <файл> - экспорт во всех поддерживаемых форматах
+
+
+amass enum -active -brute -d -w <wordlist> <домен> - брут по своему словарю
+

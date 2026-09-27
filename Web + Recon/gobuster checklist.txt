@@ -1,0 +1,56 @@
+gobuster
+Основные команды:
+dir
+dns
+vhost
+fuzz
+
+
+Использование dir:
+gobuster dir -u http://192.168.10.5/ -w /usr/share/seclists/Discovery/Web-Content/common.txt --exclude-length 294 - убираем размер ответа 294, выводим все кроме этого
+
+gobuster dir -u http://192.168.10.5/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -b 403,404 - черный список кодов, выводим все кроме этого
+
+gobuster dir -u http://192.168.10.5/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -s 200 -b "" выводим только 200
+#Из за опции -b могут быть ошибки, т.к по умолчанию стоит в черном списке код 404.
+
+
+gobuster dir -u http://192.168.10.5/ -w /usr/share/seclists/Discovery/Web-Content/common.txt --exclude-length 294 --delay 1s -t 1 - один запрос в секунду
+
+gobuster dir -u http://192.168.10.5/ -w /usr/share/seclists/Discovery/Web-Content/common.txt -x .txt,.bak - поиск с расширениями
+
+Полезные опции для dir:
+-k - игнор SSL
+-r - следовать редиректам
+-H "Header: value" - заголовок
+-c "cookie=value" - куки
+
+Использование dns (обнаружение поддоменов):
+gobuster dns -d dom.ru -w ~/wordlists/dns-small.txt -t 50 - может вернуть ошибку, если используется wildcard
+
+gobuster dns -q -d dom.ru -w ~/wordlists/dns-small.txt -t 50 --wildcard -o results.txt. (фикс ошибки)
+
+Полезные опции для dns:
+-c - проверять cname
+--resolver 8.8.8.8 - внешний DNS
+
+Использование vhost (обнаружение поддоменов 2.0, через посещение страниц)
+gobuster vhost -q -u https://dom.ru/ -w ~/dns-small.txt -t 2 --append-domain --exclude-length 0
+опция --append-domain нужна чтобы склеить домен и поддомен 
+Полезная опция для vhost:
+-k игнорить ssl
+
+
+
+
+Фаззинг:
+gobuster fuzz -u http://192.168.10.5/FUZZ -w /usr/share/seclists/Discovery/Web-Content/common.txt
+
+
+
+опциональные опции: 
+-q вывод без прогресс бара, только найденное
+-o <файл.txt> запись результата в файл, в формате txt
+-t <число> - потоки, по умолчанию 10, можно ставить, больше можно меньше.
+--delay 1s - время ожидания перед след запросом, 1с
+-x .txt,.bak искать расширения

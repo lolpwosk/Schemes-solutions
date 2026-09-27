@@ -1,0 +1,11 @@
+./testssl.sh [опции] <цель>
+доменное имя: ./testssl.sh example.com
+IP-адрес: ./testssl.sh 93.184.216.34
+URL с указанием порта: ./testssl.sh example.com:8443
+Локальный сервис: ./testssl.sh localhost:443
+
+Быстрый аудит + отчёты:
+./testssl.sh --parallel --htmlfile report.html --jsonfile report.json --logfile report.log example.com
+
+Массовый скан из файла:
+./testssl.sh --file targets.txt --parallel --htmlfile /out/

