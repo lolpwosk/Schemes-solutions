@@ -1,1 +1,48 @@
+Запуск: msfconsole -q
+В metasploit есть модули, они делятся на категории.
+Auxiliary - инструменты.
+Exploit - эксплойты - как проникнуть
+Payload - пейлоад - что сделать после проникновения.
+POST
+Encoders
+и тд...
+Поиск модулей:
+По названию
+search cockpit
+search ofbiz
 
+По CVE
+search CVE:номер
+
+шпаргалка по команде
+help <команда>
+
+
+Выбор модуля
+use <путь до модуля>
+
+Посмотреть инфу о модуле
+info
+
+Выйти из модуля
+back
+
+Просмотреть параметры
+show options
+
+посмотреть доступные пейлоады:
+show payloads
+Выбрать пейлоад:
+set payload <путь>
+
+Заполнить параметры:
+set RPORT 8443
+set LHOST 10.10.14.5
+
+Запуск run
+Выйти из модуля back
+очистить параметры unset RHOSTS или unset all
+
+
+Дока по метасплоиту:
+https://docs.metasploit.com/docs/using-metasploit/basics/using-metasploit.html
