@@ -1,0 +1,51 @@
+john <опции> файл с хешами
+
+john --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt - атака по словарю
+
+--format=формат - явное задание типа хеша.
+--single - перебор простых вариаций
+john --single --format=crypt hashes.txt
+
+
+Атаки с правилами:
+
+--rules (без параметра) - атака с базовым набором правил
+
+--rules=Single (правила похожие на режим Single, генерит слова на основе одного хэша)
+--rules=Best64 - набор, 64 правила, для скоростной атаки
+--rules=Jumbo - огромный набор из тысяч правил, медленно но тщательно
+
+john --wordlist=/usr/share/wordlists/rockyou.txt --rules hashes.txt
+
+john --wordlist=/usr/share/wordlists/rockyou.txt --rules=Best64 --format=Raw-MD5 hashes.txt
+
+
+Брутфорс с интеллектом:
+--incremental=Digits — только цифры (PIN-коды).
+
+--incremental=Lower — только строчные буквы.
+
+--incremental=Alpha — только буквы.
+
+--incremental=Alnum — буквы и цифры (оптимально для многих задач).
+
+--incremental=All — всё, включая спецсимволы (самый долгий).
+
+Пример:
+
+john --incremental=Digits --format=Raw-MD5 hash.txt
+john --incremental=All --format=Raw-SHA256 hash.txt
+
+
+Сохранение сессии
+--session=ИМЯ 
+Восстановление
+john --restore=company_ntlm
+
+проверка статуса:
+john --status=company_ntlm
+
+
+Посмотреть какие хэши из файла уже взломаны:
+john --show easy.txt
+

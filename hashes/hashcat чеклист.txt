@@ -1,0 +1,37 @@
+hashcat
+hashcat <опции> <хэш файл> <словарь>
+-a 0 (словарная атака)
+hashcat -a 0 -m 1000 hashes.txt rockyou.txt
+-a 1 (комбинированнная атака - объединение слов из двух разных словарей)
+пример: имя+год = admin2024
+hashcat -a 1 -m 1000 hashes.txt names.txt years.txt
+-a 3 маскированная атака (когда известна структура пароля, словарь добавлять при этом не нужно)
+?u (заглавная)
+?l (строчная)
+?d (цифра)
+?s (спецсимвол)
+?a - все сразу
+hashcat -a 3 -m 1000 hashes.txt ?u?l?l?l?l?d?d (пароль вида Qwerty99)
+
+гибридные атаки, первое сначала слово потом маска, вторая наоборот
+-a 6 
+-a 7 
+
+hashcat -a 6 -m 1000 hashes.txt rockyou.txt ?d?d (слова типа password99)
+hashcat -a 7 -m 1000 hashes.txt ?d?d rockyou.txt (слова типа 99password)
+
+-r (опция используется в связке со словарной атакой)
+
+hashcat -m 0 -a 0 -r /usr/share/hashcat/rules/best64.rule hashes.txt /usr/share/wordlists/rockyou.txt
+
+
+Дополнительно:
+--force - игнор предупреждений
+--show - показать взломанное (применяется к команде)
+--left - показать оставшиеся
+-o файл, запись результата в файл
+
+hashcat -m 0 -a 0 hashes.txt wordlist.txt --session=mySession (сохранить прогресс, если что то прервется)
+hashcat --session=mySession --restore (восстановиться)
+
+Крутые правила: best64.rule, d3ad0ne.rule, dive.rule
