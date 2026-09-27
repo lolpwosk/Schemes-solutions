@@ -1,0 +1,43 @@
+grep основные опции
+-i - не учитывать регистр символов.
+-v - вывести строки, где шаблон не найден
+-w - искать целые слова, отделить их от других символов пробелами или знаками препинания
+
+ПРИМЕР:
+с -w
+cat output.txt | grep  -w smb
+| smb-os-discovery: 
+| smb-security-mode:
+
+Без -w:
+└─$ cat output.txt | grep smb    
+| smb2-time: 
+| smb-os-discovery: 
+| smb2-security-mode: 
+| smb-security-mode:
+
+-с - вывести кол-во найденных строк
+-n - перед каждой строкой вывести ее номер
+-o - вывести только совпавшую часть
+
+ПРИМЕР:
+cat /etc/passwd | grep -on root
+1:root
+1:root
+1:root
+30:root
+
+-E - используется, чтобы выводить несколько регулярных выражений
+
+ПРИМЕР:
+cat /etc/passwd | grep -E "root|proxy"
+root:x:0:0:root:/root:/bin/bash
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+
+
+^s - строки которые начинаются с символа s
+
+ПРИМЕР:
+cat /etc/passwd | grep -E "^s"
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
