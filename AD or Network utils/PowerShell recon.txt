@@ -1,0 +1,40 @@
+$env:PROCESSOR_ARCHITECTURE - посмотреть какая архитектура
+$env:computerName - имя компьютера
+Импортировать модуль PowerView, выкачав его на хост через команду copy и прописав Import-Module <файл>
+
+Кейс: (разведка в домене, из под локального пользователя используя креды доменного пользователя)
+Get-DomainUser -Credential $cred
+Get-DomainComputer -Credential $cred
+Get-DomainController -Credential $cred
+
+При этом предварительно нужно создать переменную $cred, используя учетные данные пользователя.
+Пример:
+$SecPass = ConvertTo-SecureString 'password' -AsPlainText –Force
+$cred = New-Object System.Management.Automation.PSCredential('DOMAIN\User', $SecPass)
+
+Выполнить команду на другом компьютере:
+Invoke-Command -ComputerName <имя> -ScriptBlock { <команда> }
+Можно использовать с параметром -Credential
+
+Справка по командлетам:
+Get-Help <командлет>
+Будет работать только при импорте модуля PowerView
+
+Проверка: какие порты доступны на удаленном хосте / какие удаленные порты доступны в исходящих соединениях
+22,53,80,443,445 | % { Test-NetConnection -ComputerName <name> -Port $_ }
+% - ForEach-Object
+{} - блок кода, который будет выполняться для каждого объекта
+$_ - текущий объект
+
+Подключить шару компьютера к диску z:
+net use z: \\computer.domain.local\netlogon /user:DOMAIN\user password
+z: - подключиться к диску.
+
+синтаксис мануалов в windows:
+| - или
+* - 0 или больше
+[] - аргумент может быть одним из вариаций
+{} - обязательный фрагмент синтаксиса
+
+Найти указанную строку в файлах директории
+Get-ChildItem *.ps1 | Select-String Administrator
