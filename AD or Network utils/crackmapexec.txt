@@ -1,0 +1,12 @@
+crackmapexec протокол -L - посмотреть модули
+
+crackmapexec smb <ip> -u имя -p паролль --shares - посмотреть шары
+crackmapexec smb <ip> -u имя -p паролль --sessions - посмотреть активные сессии
+crackmapexec smb <ip> -u имя -p паролль --loggedon-users - посмотреть вошедших в систему пользователей
+
+Потом можно добавлять модули:
+-M dfscoerce
+-M petitpotam
+-M printerbug
+
+Ну вообщем, суть в том, чтобы прочекать все модули на наличие уязвимостей и возможностей векторов атак.
